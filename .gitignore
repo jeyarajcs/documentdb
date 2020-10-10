@@ -1,0 +1,5 @@
+node_modules/
+.env
+package-lock.json
+rds-combined-ca-bundle.pem
+demoec2.pem

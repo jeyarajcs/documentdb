@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const { readConversationCollection } = require('../config/config');
 
 /**
  * Conversation Schema
@@ -21,7 +22,7 @@ const conversationSchema = mongoose.Schema(
     logs: [{
         message: String,
         senderId: String,
-        timestamp: Date,
+        timestamp: Number,
         senderType:{
             type: String,
             enum: ["user", "visitor"]
@@ -37,6 +38,33 @@ const conversationSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+/**
+ * @description Find all conversations - The data is being read from specific replica node as per configurations.
+ */
+conversationSchema.statics.findConversations = async function () {
+  try{
+    const conversations = await this.find({}).read(readConversationCollection.node, readConversationCollection.tags );
+    return conversations;
+  }catch(err){
+    return err;
+  }
+}
+
+/**
+ * 
+ * @param {String} _id 
+ * @description find conversation by id - The data is being read from specific replica node as per configurations.
+ */
+conversationSchema.statics.findConversationById = async function (_id) {
+  try{
+    const conversation = await this.findOne({_id}).read(readConversationCollection.node, readConversationCollection.tags );
+    return conversation;
+  }catch(err){
+    return err;
+  }
+}
+
 
 
 /**

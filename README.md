@@ -7,10 +7,14 @@ The content of the **.env** will look like this.
 
     NODE_ENV=development
     PORT=8080
-    JWT_SECRET=somesecret
-    JWT_EXPIRATION_MINUTES=50
-    MONGO_URI=respective connection string
-    MONGO_URI_TESTS=respective connection string
+    JWT_SECRET=Some secret
+    JWT_EXPIRATION_MINUTES=55
+    SSH_USERNAME=VM username
+    SSH_HOST=EC2 public IP
+    DST_HOST=documentDbs hostname
+    MONGO_USER=mongouser
+    MONGO_PASSWORD=mongouserpassword
+    MONGO_URI=connectionstring
 
 > **npm install**
 

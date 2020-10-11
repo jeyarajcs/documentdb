@@ -27,9 +27,6 @@ const initClientDbConnection = () => {
       console.log("client MongoDB Connection ok!");
       global.clientConnection = db;
     });
-    // require("../models/user.model.js");
-    // require("../models/visitor.model.js");
-    // require("../models/conversation.model.js");
     return db;
   })
 };

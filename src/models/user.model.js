@@ -55,11 +55,53 @@ const userSchema = mongoose.Schema(
  * @param {string} email - The user's email
  * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
+ * @description The data is being read from specific replica node as per configurations.
  */
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } }).read(readUserCollection.node, readUserCollection.tags );
   return !!user;
 };
+
+/**
+ * 
+ * @param {String} email 
+ * @description find user by email - The data is being read from specific replica node as per configurations.
+ */
+userSchema.statics.findUser = async function (email) {
+  email = email ? {email} : {};
+  try{
+    const users = await this.findOne(email).read(readUserCollection.node, readUserCollection.tags );
+    return users;
+  }catch(err){
+    return err;
+  }
+}
+
+/**
+ * @description Find all users - The data is being read from specific replica node as per configurations.
+ */
+userSchema.statics.findUsers = async function () {
+  try{
+    const users = await this.find({},{password:0}).read(readUserCollection.node, readUserCollection.tags );
+    return users;
+  }catch(err){
+    return err;
+  }
+}
+
+/**
+ * 
+ * @param {String} _id 
+ * @description find user by id - The data is being read from specific replica node as per configurations.
+ */
+userSchema.statics.findUserById = async function (_id) {
+  try{
+    const users = await this.findOne({_id}).read(readUserCollection.node, readUserCollection.tags );
+    return users;
+  }catch(err){
+    return err;
+  }
+}
 
 /**
  * Check if password matches the user's password

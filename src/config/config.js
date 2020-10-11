@@ -2,8 +2,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 const { readFileSync } = require('fs');
 const ca = [readFileSync("rds-combined-ca-bundle.pem")];
-
 dotenv.config({ path: path.join(__dirname, '../../.env') });
+
 module.exports = {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
@@ -15,6 +15,18 @@ module.exports = {
     readUserCollection : {
       node : "secondary",
       tags : [ { "dc": "replica1", "usage": "readUsers" } ]
+    },
+    readVisitorCollection : {
+      node : "secondary",
+      tags : [ { "dc": "replica2", "usage": "readVisitors" } ]
+    },
+    readConversationCollection : {
+      node : "secondary",
+      tags : [ { "dc": "primary", "usage": "readConversation" } ]
+    },
+    readAggregate : {
+      node : "secondary",
+      tags : [ { "dc": "replica3", "usage": "aggregate" } ]
     },
     sshConfig : {
       username: process.env.SSH_USERNAME,
@@ -42,6 +54,6 @@ module.exports = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
-      serverSelectionTimeoutMS: 10000
+      serverSelectionTimeoutMS: 15000
     }
   };
